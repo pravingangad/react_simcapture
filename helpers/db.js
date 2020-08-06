@@ -1,8 +1,8 @@
 import * as SQLite from "expo-sqlite";
-import { add } from "react-native-reanimated";
 
 const db = SQLite.openDatabase("places.db");
 
+// create table
 export const init = () => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
@@ -21,13 +21,33 @@ export const init = () => {
   return promise;
 };
 
+// insert into places table
 export const insertPlace = (title, imageUri, address, lat, lng) => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
         "INSERT INTO  places (title,imageUri,address,lat,lng) VALUES(?,?,?,?,?);",
-        [title,imageUri,address,lat,lng],
-        (_,result) => {
+        [title, imageUri, address, lat, lng],
+        (_, result) => {
+          resolve(result);
+        },
+        (_, err) => {
+          reject(err);
+        }
+      );
+    });
+  });
+  return promise;
+};
+
+//  fetch values from places
+export const featchPlaces = () => {
+  const promise = new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        "SELECT * FROM places",
+        [],
+        (_, result) => {
           resolve(result);
         },
         (_, err) => {
