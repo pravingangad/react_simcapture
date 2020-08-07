@@ -41,7 +41,7 @@ export const insertPlace = (title, imageUri, address, lat, lng) => {
 };
 
 //  fetch values from places
-export const featchPlaces = () => {
+export const fetchPlaces = () => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
